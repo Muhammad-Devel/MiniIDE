@@ -26,7 +26,7 @@ export default function App() {
   const [autoRun, setAutoRun] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(Date.now());
   const [runTrigger, setRunTrigger] = useState(0);
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null); 
 
   // Build srcDoc
   const buildSrcDoc = useCallback(() => {
@@ -45,10 +45,7 @@ export default function App() {
 
   // Editor change
   const updateActiveContent = (newContent: string) => {
-    setFiles((prev) => ({
-      ...prev,
-      [active]: { ...prev[active], content: newContent },
-    }));
+    setFiles((prev) => ({ ...prev, [active]: { ...prev[active], content: newContent } }));
     if (autoRun) {
       setRunTrigger((x) => x + 1);
       setLastUpdated(Date.now());
@@ -56,7 +53,7 @@ export default function App() {
   };
 
   return (
-    <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "column", paddingRight:"20px" }}>
       <Header
         autoRun={autoRun}
         setAutoRun={setAutoRun}
@@ -67,23 +64,18 @@ export default function App() {
       />
 
       <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
-        <Sidebar
-          files={files}
-          active={active}
-          setActive={setActive}
-          onDelete={(name) => console.log("delete", name)}
-        />
+        <Sidebar files={files} active={active} setActive={setActive} onDelete={(name) => console.log("delete", name)} />
 
-        <main className="main-grid">
-          <div className="editor">
-            <CodeEditor
-              language={files[active]?.language ?? "plaintext"}
-              value={files[active]?.content ?? ""}
-              onChange={updateActiveContent}
-              onMount={() => {}}
-            />
-          </div>
-          <div className="preview">
+        <main style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 500 }}>
+          <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <CodeEditor
+                language={files[active]?.language ?? "plaintext"}
+                value={files[active]?.content ?? ""}
+                onChange={updateActiveContent}
+                onMount={() => {}}
+              />
+            </div>
             <Preview iframeRef={iframeRef} autoRun={autoRun} />
           </div>
         </main>
