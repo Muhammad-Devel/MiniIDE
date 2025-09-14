@@ -13,7 +13,10 @@ const DEFAULT_FILES: Files = {
     language: "html",
     content: "<!doctype html><html><head></head><body>Hello IDE</body></html>",
   },
-  "style.css": { language: "css", content: "body { font-family: sans-serif; }" },
+  "style.css": {
+    language: "css",
+    content: "body { font-family: sans-serif; }",
+  },
   "script.js": {
     language: "javascript",
     content: "console.log('Hello from script.js')",
@@ -26,7 +29,11 @@ export default function App() {
   const [autoRun, setAutoRun] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(Date.now());
   const [runTrigger, setRunTrigger] = useState(0);
-  const iframeRef = useRef<HTMLIFrameElement | null>(null); 
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const [previewActive, setPreviewActive] = useState<boolean>(true);
+  const previewTab = () => {
+    setPreviewActive(!previewActive);
+  };
 
   // Build srcDoc
   const buildSrcDoc = useCallback(() => {
@@ -45,7 +52,10 @@ export default function App() {
 
   // Editor change
   const updateActiveContent = (newContent: string) => {
-    setFiles((prev) => ({ ...prev, [active]: { ...prev[active], content: newContent } }));
+    setFiles((prev) => ({
+      ...prev,
+      [active]: { ...prev[active], content: newContent },
+    }));
     if (autoRun) {
       setRunTrigger((x) => x + 1);
       setLastUpdated(Date.now());
@@ -53,20 +63,41 @@ export default function App() {
   };
 
   return (
-    <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "column", paddingRight:"20px" }}>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        paddingRight: "20px",
+      }}
+    >
       <Header
         autoRun={autoRun}
         setAutoRun={setAutoRun}
         onRun={() => setRunTrigger((x) => x + 1)}
         onNewFile={() => alert("TODO: add file modal")}
         onDownload={() => alert("TODO: download")}
+        onPreview={() => setPreviewActive(!previewActive)}
         lastUpdated={lastUpdated}
       />
 
       <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
-        <Sidebar files={files} active={active} setActive={setActive} onDelete={(name) => console.log("delete", name)} />
+        <Sidebar
+          files={files}
+          active={active}
+          setActive={setActive}
+          onDelete={(name) => console.log("delete", name)}
+        />
 
-        <main style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 500 }}>
+        <main
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            minWidth: 500,
+          }}
+        >
           <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
             <div style={{ flex: 1, minWidth: 0 }}>
               <CodeEditor
@@ -76,7 +107,13 @@ export default function App() {
                 onMount={() => {}}
               />
             </div>
-            <Preview iframeRef={iframeRef} autoRun={autoRun} />
+            {previewActive && (
+              <Preview
+                iframeRef={iframeRef}
+                autoRun={autoRun}
+                previewTab={previewTab}
+              />
+            )}
           </div>
         </main>
       </div>

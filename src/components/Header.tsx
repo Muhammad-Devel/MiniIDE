@@ -4,6 +4,7 @@ interface HeaderProps {
   onRun: () => void;
   onNewFile: () => void;
   onDownload: () => void;
+  onPreview: () => void;
   lastUpdated: number;
 }
 
@@ -13,6 +14,7 @@ export default function Header({
   onRun,
   onNewFile,
   onDownload,
+  onPreview,
   lastUpdated,
 }: HeaderProps) {
   return (
@@ -38,6 +40,7 @@ export default function Header({
         </label>
         <button onClick={onNewFile}>New file</button>
         <button onClick={onDownload}>Download .html</button>
+        <button onClick={()=>{onPreview()}}>Preview</button>
       </div>
       <div style={{ marginLeft: "auto", color: "#6b7280" }}>
         Last run: {new Date(lastUpdated).toLocaleTimeString()}

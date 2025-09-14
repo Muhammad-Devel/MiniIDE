@@ -3,9 +3,10 @@ import { type RefObject } from "react";
 interface PreviewProps {
   iframeRef: RefObject<HTMLIFrameElement | null>;
   autoRun: boolean;
+  previewTab: () => void;
 }
 
-export default function Preview({ iframeRef, autoRun }: PreviewProps) {
+export default function Preview({ iframeRef, autoRun, previewTab }: PreviewProps) {
   return (
     <div
       style={{
@@ -24,10 +25,11 @@ export default function Preview({ iframeRef, autoRun }: PreviewProps) {
           justifyContent: "space-between",
         }}
       >
-        <div style={{ fontSize: 13, color: "#374151" }}>Preview</div>
+        <div style={{ fontSize: 13, color: "#374151", paddingRight:"45px"}}>Preview</div>
         <div style={{ fontSize: 12, color: "#6b7280" }}>
           Auto-run: {autoRun ? "on" : "off"}
         </div>
+        <button onClick={()=>previewTab()}>X</button>
       </div>
       <div style={{ flex: 1 }}>
         <iframe
