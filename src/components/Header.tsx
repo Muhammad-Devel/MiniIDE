@@ -27,8 +27,8 @@ export default function Header({
         borderBottom: "1px solid #e5e7eb",
       }}
     >
-      <strong>Mini IDE</strong>
-      <div style={{ display: "flex", gap: 8, marginLeft: 12 }}>
+      <strong style={{display:"flex", width:200, alignItems:"center", justifyContent:"center", gap:"8px"}}><img src="../../public/mini-ide.svg" style={{width: "32px", height:"auto", objectFit:"cover"}} />Mini IDE</strong>
+      <div style={{ display: "flex", gap: 8, marginLeft: 8 }}>
         <button onClick={onRun}>Run (Ctrl/Cmd+S)</button>
         <label style={{ display: "flex", alignItems: "center", gap: 6 }}>
           <input
